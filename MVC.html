@@ -63,13 +63,13 @@
         appendElement(document.body, 'div', 'content');
         appendElement(content, 'div', 'searchContainer');
         appendElement(content, 'div', 'itemsContainer');
-        appendElement(content, 'div', 'addNewContainer'); // new
+        appendElement(content, 'div', 'addNewContainer');
         appendInput(searchContainer, 'text', 'searchInput', 'Search');
         appendElement(searchContainer.children[0], 'button', 'clearButton');
-        appendInput(addNewContainer, 'text', 'addNewInput', 'Add new item'); // new
-        appendElement(addNewContainer.children[0], 'button', 'addNewButton'); // new
+        appendInput(addNewContainer, 'text', 'addNewInput', 'Add new item');
+        appendElement(addNewContainer.children[0], 'button', 'addNewButton');
         clearButton.innerText = 'Clear';
-        addNewButton.innerText = 'Add'; // new
+        addNewButton.innerText = 'Add';
 
         clearButton.addEventListener('click', () => {
             searchInput.value = '';
