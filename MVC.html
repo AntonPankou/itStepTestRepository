@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .section {
+            margin-bottom: 10px;
+            padding: 1px;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        'use strict';
+
+        const appendElement = (position, tag, id = null) => {
+            const elem = document.createElement(tag);
+            elem.id = id;
+            position.append(elem);
+        };
+
+        const appendInput = (form, type, id, label) => {
+            const inputContainer = document.createElement('div');
+
+            const input = document.createElement('input');
+            input.setAttribute('type', type);
+            input.id = id;
+
+            if (label) {
+                const labelForInput = document.createElement('label');
+                labelForInput.setAttribute('for', id);
+                labelForInput.innerText = label;
+                inputContainer.append(labelForInput);
+            }
+
+            inputContainer.append(input);
+
+            form.append(inputContainer);
+        };
+
+        const model = [
+            'fehu',
+            'uruz',
+            'thurisaz',
+            'ansuz',
+            'raido',
+            'khenaz',
+            'gebo',
+            'wunjo',
+            'hagalaz',
+            'naudiz',
+            'isaz',
+            'jera',
+            'aivaz',
+            'per',
+            'algiz',
+            'sowilo',
+            'tiwaz',
+            'berkana',
+            'ehwaz',
+            'manaz',
+            'lahuz'
+        ];
+
+        let inEditMode = false;
+
+        appendElement(document.body, 'div', 'content');
+        appendElement(content, 'div', 'searchContainer');
+        appendElement(content, 'div', 'itemsContainer');
+        appendElement(content, 'div', 'addNewContainer'); // new
+        appendInput(searchContainer, 'text', 'searchInput', 'Search');
+        appendElement(searchContainer.children[0], 'button', 'clearButton');
+        appendInput(addNewContainer, 'text', 'addNewInput', 'Add new item'); // new
+        appendElement(addNewContainer.children[0], 'button', 'addNewButton'); // new
+        clearButton.innerText = 'Clear';
+        addNewButton.innerText = 'Add'; // new
+
+        clearButton.addEventListener('click', () => {
+            searchInput.value = '';
+            getModel();
+        });
+
+        addNewButton.addEventListener('click', () =>{
+            model.push(addNewInput.value);
+            getModel();
+            addNewInput.value = '';
+        });
+
+        const getModel = (array = model) => {
+            itemsContainer.innerHTML = '';
+            array.forEach((item) => {
+                const listItem = document.createElement('div');
+                listItem.innerText = item;
+                itemsContainer.append(listItem);
+
+                listItem.addEventListener('dblclick', (event) => {
+                    if (inEditMode) return
+                    inEditMode = true;
+                    listItem.innerHTML = `<input type='text' value=${listItem.innerText}><button>Confirm</button>`;
+                    const button = listItem.querySelector('button');
+
+                    button.addEventListener('click', event => {
+                        const input = listItem.querySelector('input');
+                        
+                        listItem.innerHTML = `${input.value}`;
+
+                        const index = model.indexOf(item);
+                        model[index] = input.value;
+                        inEditMode = false;
+                    })
+                });
+            });
+        };
+
+        getModel();
+
+        searchInput.addEventListener('change', (event) => {
+            const filteredListArray = model.filter(item => { 
+                return item.startsWith(event.target.value) 
+            });
+            getModel(filteredListArray);
+        })
+
+        /* 
+        model - array of data
+
+        view - html
+        
+        controller - inputs and buttons
+        */
+
+    </script>
+</body>
+
+</html>
